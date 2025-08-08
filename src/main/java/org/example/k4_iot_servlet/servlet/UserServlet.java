@@ -24,6 +24,7 @@ import org.example.k4_iot_servlet.entity.User;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.List;
 
 @WebServlet("/") // 서블릿 실행 초기 페이지 URL
 // 서블릿 URL 매핑을 위한 어노테이션
@@ -117,23 +118,42 @@ public class UserServlet extends HttpServlet { // 서블릿 컨테이너가 해�
         dispatcher.forward(req, resp);
     }
 
+    //
+    private void updateUser(HttpServletRequest req, HttpServletResponse resp)
+        throws ServletException, IOException, SQLException
+    {
+        int id = Integer.parseInt(req.getParameter("id"));
+        String name = req.getParameter("name");
+        String email = req.getParameter("email");
+        String country = req.getParameter("country");
 
-    private void updateUser(HttpServletRequest req, HttpServletResponse resp) {
+        User user = new User(id, name, email, country);
+
+        userDao.updateUser(user);
+
+        resp.sendRedirect("list");
     }
 
-    private void deleteUser(HttpServletRequest req, HttpServletResponse resp) {
+    private void deleteUser(HttpServletRequest req, HttpServletResponse resp)
+        throws ServletException, IOException, SQLException
+    {
+        int id = Integer.parseInt(req.getParameter("id"));
+
+        userDao.deleteUser(id);
+
+        resp.sendRedirect("list");
     }
 
-    private void listUser(HttpServletRequest req, HttpServletResponse resp) {
+    private void listUser(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException, SQLException
+    {
+        List<User> listUser = userDao.selectAllUsers();
+
+        req.setAttribute("listUser", listUser);
+
+        RequestDispatcher dispatcher = req.getRequestDispatcher("/user/user-list.jsp");
+        dispatcher.forward(req, resp);
     }
-
-
-
-
-
-
-
-
 
 
 

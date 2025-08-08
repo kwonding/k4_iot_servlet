@@ -7,9 +7,11 @@ DEFAULT CHARACTER SET utf8mb4 COLLATE UTF8mb4_general_ci;
 
 USE `k4_iot_servlet`;
 
-CREATE TABLE user (
+CREATE TABLE users (
 	id int auto_increment primary key,
     name varchar(100) not null,
     email varchar(100) not null UNIQUE,
     country varchar(100) not null
 );
+
+SELECT * FROM users;
